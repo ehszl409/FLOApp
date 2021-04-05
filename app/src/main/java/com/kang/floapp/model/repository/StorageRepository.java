@@ -41,7 +41,7 @@ public class StorageRepository {
         call.enqueue(new Callback<ResponseDto<List<Storage>>>() {
             @Override
             public void onResponse(Call<ResponseDto<List<Storage>>> call, Response<ResponseDto<List<Storage>>> response) {
-                Log.d(TAG, "onResponse: fetchAllStorage 진입 확인 = " + response.body().getData());
+                //Log.d(TAG, "onResponse: fetchAllStorage 진입 확인 = " + response.body().getData());
                 ResponseDto<List<Storage>> result = response.body();
                 mtStorageList.setValue(result.getData());
             }

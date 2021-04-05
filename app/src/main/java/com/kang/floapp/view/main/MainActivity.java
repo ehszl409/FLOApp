@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -24,6 +27,7 @@ import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
+import com.kang.floapp.notification.CreateNotification;
 import com.kang.floapp.utils.PlayCallback;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
@@ -52,6 +56,8 @@ import java.util.Random;
 
 //여기는 Kang4 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    NotificationManager notificationManager;
 
     private static final String TAG = "MainActivity2";
     //private MainActivity mContext = MainActivity.this;
@@ -113,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         serviceObservers();
         initData();
 
+        createChannel();
+
 
         //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
         Fragment playlistFrag = new FragPlaylist(mp, playListAdapter, mainViewModel, mContext);
@@ -170,6 +178,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         seekBarInit();
 
+    }
+
+    public void createChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID, "park", NotificationManager.IMPORTANCE_LOW);
+
+            notificationManager = getSystemService(NotificationManager.class);
+            if(notificationManager != null){
+                notificationManager.createNotificationChannel(channel);
+            }
+
+        }
     }
 
     public void initData(){
